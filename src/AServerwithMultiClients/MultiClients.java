@@ -29,11 +29,12 @@ class ClientHandlers extends Thread {
         try {
             din = new DataInputStream(s.getInputStream());
             str = din.readUTF().toString();
+            System.out.println(str+"\n Thank You,Your attendence is marked successfully");
             LocalDate date = LocalDate.now();
             //Handling files to which data is written
             File f = new File(date.toString() + ".txt");
             if (f.createNewFile()) {
-                System.out.println("The file is created");
+                System.out.println("New File is Created for attendence:");
                 //Writing the file to the external storage
                 FileWriter rf = new FileWriter(date.toString() + ".txt");
                 rf.write("\n" + str + " " + date.toString());
@@ -44,7 +45,7 @@ class ClientHandlers extends Thread {
 
                 //Scaning input from keyboard
 
-                Scanner mf = new Scanner(System.in);
+                Scanner mf = new Scanner(f);
                 while (mf.hasNextLine()) {
                     lnlst.add(mf.nextLine());
                 }
@@ -55,14 +56,13 @@ class ClientHandlers extends Thread {
                         thereIs = true;
                     }
                 }
-                if (thereIs = false) {
-                    if (str.equals("Thank You")){
+                if (thereIs == false) {
+                    if (str.equals("thank you")) {
                         svr.close();
+                    } else {
+                        rf.write("\n" + str + "\n" + date);
+                        rf.close();
                     }
-                }
-                else {
-                    rf.write("\n" + str + date);
-                    rf.close();
                 }
             }
             s.close();
